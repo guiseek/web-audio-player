@@ -1,6 +1,4 @@
-let loaded = false;
-
-function createPlayer() {
+function inicializa() {
   const audio = new Audio();
   const selectKeys = ['Enter', 'Space'];
 
@@ -9,7 +7,6 @@ function createPlayer() {
   // Seleciona os elementos com querySelector
   const form = document.querySelector('form');
   const em = document.querySelector('em');
-  // const audio = document.querySelector('audio');
   const select = document.querySelector('select');
   const canvas = document.querySelector('canvas');
   const playIcon = document.querySelector<SVGAElement>('#play-icon');
@@ -228,9 +225,4 @@ function createPlayer() {
   };
 }
 
-document.onclick = () => {
-  if (!loaded) {
-    createPlayer();
-    loaded = true;
-  }
-};
+window.onload = inicializa;
