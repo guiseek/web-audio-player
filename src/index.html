@@ -1,0 +1,83 @@
+<html lang="pt-br">
+  <head>
+    <base href="/">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.scss" />
+    <script type="module" src="main.ts" defer></script>
+    <title>Audio Player</title>
+  </head>
+
+  <body>
+    <main role="main">
+      <h1>Web Audio Player</h1>
+      <form>
+        <em id="track"></em>
+        <section>
+          <canvas></canvas>
+        </section>
+        <nav>
+          <button type="button" id="play" aria-label="play">
+            <svg id="play-icon" width="24px" height="24px">
+              <use xlink:href="#play-symbol"></use>
+            </svg>
+            <svg id="pause-icon" width="24px" height="24px">
+              <use xlink:href="#pause-symbol"></use>
+            </svg>
+          </button>
+          <button type="button" id="anterior" aria-label="anterior">
+            <svg width="24px" height="24px">
+              <use xlink:href="#anterior-symbol"></use>
+            </svg>
+          </button>
+          <button type="button" id="proxima" aria-label="próxima">
+            <svg width="24px" height="24px">
+              <use xlink:href="#proxima-symbol"></use>
+            </svg>
+          </button>
+        </nav>
+
+
+        <section class="flex flex-align-center">
+          <label for="tempo"> tempo </label>
+          <input type="range" id="tempo" name="tempo" aria-label="tempo" min="0" value="0">
+          <output> 00:00 </output>
+        </section>
+
+        <section class="flex flex-align-center">
+          <label for="volume"> volume </label>
+          <input type="range" id="volume" name="volume" aria-label="volume" min="0" value="100">
+          <output> 100% </output>
+        </section>
+
+        <label>
+          <select multiple name="playlist" aria-label="playlist" id=""></select>
+        </label>
+      </form>
+    </main>
+
+    <svg style="display: none">
+      <symbol id="play-symbol" viewBox="0 0 24 24">
+        <path d="M0 0h24v24H0V0z" fill="none" />
+        <path d="M10 8.64L15.27 12 10 15.36V8.64M8 5v14l11-7L8 5z" />
+      </symbol>
+      <symbol id="pause-symbol" viewBox="0 0 24 24">
+        <path d="M0 0h24v24H0V0z" fill="none" />
+        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+      </symbol>
+      <symbol id="anterior-symbol" viewBox="0 0 24 24">
+        <path d="M0 0h24v24H0V0z" fill="none" />
+        <path
+          d="M6 6h2v12H6zm3.5 6l8.5 6V6l-8.5 6zm6.5 2.14L12.97 12 16 9.86v4.28z"
+        />
+      </symbol>
+      <symbol id="proxima-symbol" viewBox="0 0 24 24">
+        <path d="M0 0h24v24H0V0z" fill="none" />
+        <path
+          d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"
+        />
+      </symbol>
+    </svg>
+  </body>
+</html>

@@ -1,0 +1,159 @@
+@use "sass:map" as map;
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
+
+$palette: (
+  primary: rgba(0, 132, 255, 0.466),
+  divider: rgb(216, 216, 216),
+);
+
+$player: (
+  width: 300px,
+  button-width: 84px,
+  button-fill: rgba(map.get($palette, "primary"), 0.6),
+  border-color: map.get($palette, "divider"),
+  button-hover: rgba(map.get($palette, "primary"), 0.4),
+  button-active: rgba(map.get($palette, "primary"), 1),
+);
+
+$select: (
+  option-checked: rgba(map.get($palette, "primary"), 0.6),
+  option-active: rgba(map.get($palette, "primary"), 0.4),
+  option-hover: rgba(map.get($palette, "primary"), 0.1),
+);
+
+body {
+  font-family: "Poppins", sans-serif;
+  color: #666;
+  accent-color: map.get($palette, "primary");
+}
+
+#pause-icon {
+  display: none;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid map.get($player, "border-color");
+  width: map.get($player, "width");
+
+  padding: 0;
+  margin: 0;
+
+  section {
+    gap: 8px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid map.get($player, "border-color");
+    width: calc(100% - 20px);
+    font-size: 14px;
+    input {
+      max-width: 160px;
+    }
+    canvas {
+      width: 280px;
+    }
+  }
+
+  > label {
+    display: flex;
+    width: 100%;
+  }
+  
+  input {
+    width: 100%;
+  }
+
+  output {
+    display: block;
+    text-align: end;
+    min-width: 40px;
+  }
+
+  em {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% - 12px);
+    height: 24px;
+    padding: 6px;
+  }
+
+  nav {
+    padding: 12px 6px;
+    display: flex;
+    gap: 10px;
+    button {
+      width: map.get($player, "button-width");
+      display: flex;
+      justify-content: center;
+      height: 32px;
+      border-color: transparent;
+      border-style: solid;
+      background: transparent;
+
+      svg {
+        fill: map.get($player, "button-fill");
+      }
+
+      &:hover {
+        border-color: map.get($player, "button-hover");
+      }
+
+      &:active,
+      &:focus {
+        border-color: map.get($player, "button-active");
+      }
+    }
+  }
+
+  select {
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-top: 1px solid #ccc;
+  }
+
+  select option {
+    padding: 6px 12px;
+  }
+
+  select option:active {
+    background: map.get($select, "option-active");
+  }
+
+  select option:checked {
+    background: map.get($select, "option-checked");
+  }
+
+  select option:hover:not(:checked) {
+    background: map.get($select, "option-hover");
+  }
+}
+
+
+.flex {
+  display: flex;
+  
+  &-column {
+    flex-direction: column;
+  }
+
+  &-row {
+    flex-direction: row;
+  }
+
+  &-justify-between {
+    justify-content: space-between;
+  }
+
+  &-align-center {
+    align-items: center;
+  }
+}
+
