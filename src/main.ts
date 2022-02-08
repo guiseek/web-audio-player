@@ -196,9 +196,6 @@ function createPlayer() {
   audioSourceNode.connect(analyserNode);
   analyserNode.connect(audioCtx.destination);
 
-  canvas.width = 280;
-  canvas.height = 200;
-
   let bars: number;
   let barX: number;
   let barWidth: number;
