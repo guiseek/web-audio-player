@@ -1,9 +1,10 @@
 let loaded = false;
 
 function createPlayer() {
-  let tocandoAgora = 0;
+  const audio = new Audio();
+  const selectKeys = ['Enter', 'Space'];
 
-  let audio = new Audio();
+  let tocandoAgora = 0;
 
   // Seleciona os elementos com querySelector
   const form = document.querySelector('form');
@@ -94,8 +95,11 @@ function createPlayer() {
   // Esconde o play e mostra o pause
   audio.onplay = () => {
     frameLooper();
+    tempo.max = `${audio.duration}`;
+
     playIcon.style.display = 'none';
     pauseIcon.style.display = 'block';
+    
     em.textContent = listaDeMusicas[tocandoAgora].artist;
   };
 
@@ -162,9 +166,13 @@ function createPlayer() {
   // Ao dar 2 cliques em uma música, toca a música
   select.ondblclick = () => trocaMusica();
 
-  // Ao pressionar enter focado no select, toca a música
+  /**
+   * Verifica se a tecla pressionada faz parte da lista
+   * que definimos como teclas selecionáveis.
+   * Caso seja verdade, toca a música.
+   */
   select.onkeydown = (event) => {
-    if (event.key === 'Enter') {
+    if (selectKeys.includes(event.code)) {
       trocaMusica();
     }
   };
