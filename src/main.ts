@@ -225,4 +225,12 @@ function inicializa() {
   };
 }
 
-window.onload = inicializa;
+
+let loaded = false;
+
+document.onclick = () => {
+  if (!loaded) {
+    inicializa();
+  }
+  loaded = true;
+}
