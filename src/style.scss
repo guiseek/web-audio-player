@@ -2,9 +2,15 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap");
 
+:root {
+  --color-primary: #0084ff77;
+  --color-secondary: #0084ff;
+  --color-divider: #d8d8d8;
+}
+
 $palette: (
-  primary: rgba(0, 132, 255, 0.466),
-  divider: rgb(216, 216, 216),
+  primary: var(--color-primary),
+  divider: var(--color-divider),
 );
 
 $player: (
@@ -38,7 +44,7 @@ form {
   justify-content: center;
   align-items: center;
   border: 1px solid map.get($player, "border-color");
-  width: map.get($player, "width");
+  // width: map.get($player, "width");
 
   padding: 0;
   margin: 0;
@@ -52,12 +58,6 @@ form {
     border-top: 1px solid map.get($player, "border-color");
     width: calc(100% - 20px);
     font-size: 14px;
-    input {
-      max-width: 160px;
-    }
-    canvas {
-      width: 280px;
-    }
   }
 
   > label {
@@ -84,10 +84,16 @@ form {
     padding: 6px;
   }
 
-  nav {
-    padding: 12px 6px;
+  menu {
+    padding: 0;
     display: flex;
     gap: 10px;
+
+    li {
+      padding: 0;
+      list-style: none;
+    }
+
     button {
       width: map.get($player, "button-width");
       display: flex;
@@ -96,18 +102,16 @@ form {
       border-color: transparent;
       border-style: solid;
       background: transparent;
-
-      svg {
-        fill: map.get($player, "button-fill");
-      }
-
+      cursor: pointer;
+      opacity: .4;
+      
       &:hover {
-        border-color: map.get($player, "button-hover");
+        opacity: .8;
       }
-
+      
       &:active,
       &:focus {
-        border-color: map.get($player, "button-active");
+        opacity: 1;
       }
     }
   }

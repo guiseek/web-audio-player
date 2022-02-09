@@ -16,43 +16,73 @@
         <section>
           <canvas width="280" height="200"></canvas>
         </section>
-        <nav>
-          <button type="button" id="play" autofocus aria-label="play">
-            <svg id="play-icon" width="24px" height="24px">
-              <use xlink:href="#play-symbol"></use>
-            </svg>
-            <svg id="pause-icon" width="24px" height="24px">
-              <use xlink:href="#pause-symbol"></use>
-            </svg>
-          </button>
-          <button type="button" id="anterior" aria-label="anterior">
-            <svg width="24px" height="24px">
-              <use xlink:href="#anterior-symbol"></use>
-            </svg>
-          </button>
-          <button type="button" id="proxima" aria-label="próxima">
-            <svg width="24px" height="24px">
-              <use xlink:href="#proxima-symbol"></use>
-            </svg>
-          </button>
-        </nav>
-
+        <menu>
+          <li>
+            <button type="button" id="play" autofocus aria-label="play">
+              <svg id="play-icon" width="24px" height="24px">
+                <use xlink:href="#play-symbol"></use>
+              </svg>
+              <svg id="pause-icon" width="24px" height="24px">
+                <use xlink:href="#pause-symbol"></use>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button type="button" id="anterior" aria-label="anterior">
+              <svg width="24px" height="24px">
+                <use xlink:href="#anterior-symbol"></use>
+              </svg>
+            </button>
+          </li>
+          <li>
+            <button type="button" id="proxima" aria-label="próxima">
+              <svg width="24px" height="24px">
+                <use xlink:href="#proxima-symbol"></use>
+              </svg>
+            </button>
+          </li>
+        </menu>
 
         <section class="flex flex-align-center">
           <label for="tempo"> tempo </label>
-          <input type="range" id="tempo" name="tempo" aria-label="tempo" min="0" value="0">
+          <input
+            type="range"
+            id="tempo"
+            name="tempo"
+            aria-label="tempo"
+            min="0"
+            value="0"
+          />
           <output> 00:00 </output>
         </section>
 
         <section class="flex flex-align-center">
           <label for="volume"> volume </label>
-          <input type="range" id="volume" name="volume" aria-label="volume" min="0" value="100">
+          <input
+            type="range"
+            id="volume"
+            name="volume"
+            aria-label="volume"
+            min="0"
+            value="100"
+          />
           <output> 100% </output>
         </section>
 
         <label>
           <select multiple name="playlist" aria-label="playlist" id=""></select>
         </label>
+
+        <section class="flex flex-align-center">
+          <label for="color"> color </label>
+          <input
+            type="color"
+            id="color"
+            name="color"
+            aria-label="cor"
+          />
+          <output>  </output>
+        </section>
       </form>
     </main>
 

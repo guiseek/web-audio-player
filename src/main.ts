@@ -1,8 +1,10 @@
 function inicializa() {
   const audio = new Audio();
   const selectKeys = ['Enter', 'Space'];
-
+  
   let tocandoAgora = 0;
+  
+  let barsColor = '#0084ff';
 
   // Seleciona os elementos com querySelector
   const form = document.querySelector('form');
@@ -29,6 +31,7 @@ function inicializa() {
 
   const tempo = getInput('tempo');
   const volume = getInput('volume');
+  const color = getInput('color');
 
   // Interface da música
   interface AudioTrack {
@@ -51,19 +54,6 @@ function inicializa() {
     select.add(new Option(musica.artist, `${numero}`));
   });
 
-  /**
-   * Daqui pra baixo tudo é baseado em eventos do DOM
-   * onplay
-   * onpause
-   *
-   * Da pra usar ainda:
-   * onended, ontimeupdate...
-   *
-   * onended: pra passar pra próxima música quando uma terminar
-   * ontimeupdate: pra atualizar o tempo tocando
-   *
-   */
-
   // Atualiza o slider conforme o audio
   audio.ontimeupdate = () => {
     if (tempo) {
@@ -75,6 +65,17 @@ function inicializa() {
         s < 10 ? '0' : ''
       }${s}`;
     }
+  };
+
+  color.value = barsColor;
+
+  color.oninput = () => {
+    barsColor = color.value;
+    document.documentElement.style.setProperty('--color-primary', barsColor);
+  };
+
+  audio.onloadedmetadata = () => {
+    tempo.max = `${audio.duration}`;
   };
 
   // Ao arrastar o slider, sincroniza o audio
@@ -92,7 +93,6 @@ function inicializa() {
   // Esconde o play e mostra o pause
   audio.onplay = () => {
     frameLooper();
-    tempo.max = `${audio.duration}`;
 
     playIcon.style.display = 'none';
     pauseIcon.style.display = 'block';
@@ -205,11 +205,15 @@ function inicializa() {
   let barX: number;
   let barWidth: number;
   let barHeight: number;
-
+  
   let render = () => {
+    canvas.width = innerWidth - 40;
+
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-    canvasCtx.fillStyle = 'rgba(0, 132, 255, 0.466)';
-    bars = 280;
+    canvasCtx.fillStyle = barsColor;
+    
+    bars = canvas.width;
+    
     for (let i = 0; i < bars; i++) {
       barWidth = canvas.width / bars;
       barX = i * (barWidth + 2);
