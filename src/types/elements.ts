@@ -10,4 +10,5 @@ export interface PlayerElements {
   time: HTMLInputElement;
   volume: HTMLInputElement;
   color: HTMLInputElement;
+  colorRange: HTMLInputElement;
 }

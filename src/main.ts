@@ -1,3 +1,4 @@
+import { hexToRgb, rgbToHex, setPaletteColor } from './utilities/color';
 import { queryGroupBySelector } from './utilities/query';
 import { PlayerElements } from './types/elements';
 
@@ -12,8 +13,51 @@ const elCtrl = queryGroupBySelector<PlayerElements>({
   canvas: 'canvas',
   select: 'select',
   volume: '#volume',
+  colorRange: '#color-range',
   playIcon: '#play svg > use',
 });
+
+const configColor = {
+  range: {
+    min: 0,
+    max: 1530
+  },
+  step: 1,
+  initial: { red: 255, green: 0, blue: 0 },
+  sequence: [
+    { min: 0, max: 255, key: 'blue', dir: 'up', value: { red: 255, green: 0, blue: 0 } },
+    { min: 256, max: 510, key: 'red', dir: 'down', value: { red: 255, green: 0, blue: 255 } },
+    { min: 511, max: 765, key: 'green', dir: 'up', value: { red: 0, green: 0, blue: 255 }  },
+    { min: 766, max: 1020, key: 'blue', dir: 'down', value: { red: 0, green: 255, blue: 255 } },
+    { min: 1021, max: 1275, key: 'red', dir: 'up', value: { red: 0, green: 255, blue: 0 } },
+    { min: 1276, max: 1530, key: 'green', dir: 'down', value: { red: 255, green: 255, blue: 0 } },
+  ]
+}
+
+elCtrl.colorRange.step = `${configColor.step}`;
+elCtrl.colorRange.min = `${configColor.range.min}`;
+elCtrl.colorRange.max = `${configColor.range.max}`;
+elCtrl.colorRange.value = `${configColor.range.min}`;
+
+elCtrl.colorRange.oninput = () => {
+  const value = elCtrl.colorRange.valueAsNumber;
+  
+  const step = configColor.sequence.find(({ min, max }) => value >= min && value <= max);  
+  
+  const color = hexToRgb(elCtrl.color.value, { format: 'object' });
+  
+  if (step && color) {
+    if (step.dir === 'up') {
+      color[step.key] = step.value[step.key] + (value - step.min);
+    } else {
+      color[step.key] = step.value[step.key] - (value - step.min);
+    }
+
+    setPaletteColor('color-primary', rgbToHex(color));
+  }
+}
+
+
 
 function inicializa() {
   const audio = new Audio();
@@ -60,9 +104,8 @@ function inicializa() {
 
       const s = elCtrl.time.valueAsNumber % 60 | 0;
       const m = (elCtrl.time.valueAsNumber / 60) % 60 | 0;
-      elCtrl.time.nextElementSibling!.textContent = `${
-        m < 10 ? '0' : ''
-      }${m}:${s < 10 ? '0' : ''}${s}`;
+      elCtrl.time.nextElementSibling!.textContent = `${m < 10 ? '0' : ''
+        }${m}:${s < 10 ? '0' : ''}${s}`;
     }
   };
 
@@ -88,8 +131,6 @@ function inicializa() {
 
     elCtrl.volume.nextElementSibling!.textContent = `${elCtrl.volume.valueAsNumber}%`;
   };
-
-  // const playIcon = elCtrl.play.querySelector<SVGUseElement>('svg > use');
 
   // Esconde o play e mostra o pause
   audio.onplay = () => {
