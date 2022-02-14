@@ -22,34 +22,37 @@
               <svg id="play-icon" width="24px" height="24px">
                 <use xlink:href="#play-symbol"></use>
               </svg>
+              <!-- <svg id="play-icon" width="24px" height="24px">
+                <use xlink:href="#play-symbol"></use>
+              </svg>
               <svg id="pause-icon" width="24px" height="24px">
                 <use xlink:href="#pause-symbol"></use>
+              </svg> -->
+            </button>
+          </li>
+          <li>
+            <button type="button" id="prev" aria-label="anterior">
+              <svg width="24px" height="24px">
+                <use xlink:href="#prev-symbol"></use>
               </svg>
             </button>
           </li>
           <li>
-            <button type="button" id="anterior" aria-label="anterior">
+            <button type="button" id="next" aria-label="próxima">
               <svg width="24px" height="24px">
-                <use xlink:href="#anterior-symbol"></use>
-              </svg>
-            </button>
-          </li>
-          <li>
-            <button type="button" id="proxima" aria-label="próxima">
-              <svg width="24px" height="24px">
-                <use xlink:href="#proxima-symbol"></use>
+                <use xlink:href="#next-symbol"></use>
               </svg>
             </button>
           </li>
         </menu>
 
         <section class="flex flex-align-center">
-          <label for="tempo"> tempo </label>
+          <label for="time"> time </label>
           <input
             type="range"
-            id="tempo"
-            name="tempo"
-            aria-label="tempo"
+            id="time"
+            name="time"
+            aria-label="time"
             min="0"
             value="0"
           />
@@ -95,13 +98,13 @@
         <path d="M0 0h24v24H0V0z" fill="none" />
         <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
       </symbol>
-      <symbol id="anterior-symbol" viewBox="0 0 24 24">
+      <symbol id="prev-symbol" viewBox="0 0 24 24">
         <path d="M0 0h24v24H0V0z" fill="none" />
         <path
           d="M6 6h2v12H6zm3.5 6l8.5 6V6l-8.5 6zm6.5 2.14L12.97 12 16 9.86v4.28z"
         />
       </symbol>
-      <symbol id="proxima-symbol" viewBox="0 0 24 24">
+      <symbol id="next-symbol" viewBox="0 0 24 24">
         <path d="M0 0h24v24H0V0z" fill="none" />
         <path
           d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"

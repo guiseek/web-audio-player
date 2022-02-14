@@ -1,37 +1,27 @@
+import { queryGroupBySelector } from './utilities/query';
+import { PlayerElements } from './types/elements';
+
+const elCtrl = queryGroupBySelector<PlayerElements>({
+  em: 'em',
+  form: 'form',
+  play: '#play',
+  prev: '#prev',
+  next: '#next',
+  time: '#time',
+  color: '#color',
+  canvas: 'canvas',
+  select: 'select',
+  volume: '#volume',
+  playIcon: '#play svg > use',
+});
+
 function inicializa() {
   const audio = new Audio();
   const selectKeys = ['Enter', 'Space'];
-  
+
   let tocandoAgora = 0;
-  
+
   let barsColor = '#0084ff';
-
-  // Seleciona os elementos com querySelector
-  const form = document.querySelector('form');
-  const em = document.querySelector('em');
-  const select = document.querySelector('select');
-  const canvas = document.querySelector('canvas');
-  const playIcon = document.querySelector<SVGAElement>('#play-icon');
-  const pauseIcon = document.querySelector<SVGElement>('#pause-icon');
-
-  // Usado pra capturar botões
-  function getButton(id: string) {
-    return form?.querySelector<HTMLButtonElement>('#' + id);
-  }
-
-  // Usado pra capturar controles
-  function getInput(id: string) {
-    return form?.querySelector<HTMLInputElement>('#' + id);
-  }
-
-  // Captura botões
-  const play = getButton('play');
-  const anterior = getButton('anterior');
-  const proxima = getButton('proxima');
-
-  const tempo = getInput('tempo');
-  const volume = getInput('volume');
-  const color = getInput('color');
 
   // Interface da música
   interface AudioTrack {
@@ -44,75 +34,84 @@ function inicializa() {
 
   // Playlist
   const listaDeMusicas: AudioTrack[] = [
-    { url: new URL('./assets/SoundHelix-Song-1.mp3', import.meta.url).pathname, artist: 'SoundHelix Song 1' },
-    { url: new URL('./assets/SoundHelix-Song-2.mp3', import.meta.url).pathname, artist: 'SoundHelix Song 2' },
-    { url: new URL('./assets/SoundHelix-Song-3.mp3', import.meta.url).pathname, artist: 'SoundHelix Song 3' },
+    {
+      url: new URL('./assets/SoundHelix-Song-1.mp3', import.meta.url).pathname,
+      artist: 'SoundHelix Song 1',
+    },
+    {
+      url: new URL('./assets/SoundHelix-Song-2.mp3', import.meta.url).pathname,
+      artist: 'SoundHelix Song 2',
+    },
+    {
+      url: new URL('./assets/SoundHelix-Song-3.mp3', import.meta.url).pathname,
+      artist: 'SoundHelix Song 3',
+    },
   ];
 
   // Adiciona músicas no select
   listaDeMusicas.forEach((musica, numero) => {
-    select.add(new Option(musica.artist, `${numero}`));
+    elCtrl.select.add(new Option(musica.artist, `${numero}`));
   });
 
   // Atualiza o slider conforme o audio
   audio.ontimeupdate = () => {
-    if (tempo) {
-      tempo.value = audio.currentTime.toString();
+    if (elCtrl.time) {
+      elCtrl.time.value = audio.currentTime.toString();
 
-      const s = tempo.valueAsNumber % 60 | 0;
-      const m = (tempo.valueAsNumber / 60) % 60 | 0;
-      tempo.nextElementSibling!.textContent = `${m < 10 ? '0' : ''}${m}:${
-        s < 10 ? '0' : ''
-      }${s}`;
+      const s = elCtrl.time.valueAsNumber % 60 | 0;
+      const m = (elCtrl.time.valueAsNumber / 60) % 60 | 0;
+      elCtrl.time.nextElementSibling!.textContent = `${
+        m < 10 ? '0' : ''
+      }${m}:${s < 10 ? '0' : ''}${s}`;
     }
   };
 
-  color.value = barsColor;
+  elCtrl.color.value = barsColor;
 
-  color.oninput = () => {
-    barsColor = color.value;
+  elCtrl.color.oninput = () => {
+    barsColor = elCtrl.color.value;
     document.documentElement.style.setProperty('--color-primary', barsColor);
   };
 
   audio.onloadedmetadata = () => {
-    tempo.max = `${audio.duration}`;
+    elCtrl.time.max = `${audio.duration}`;
   };
 
   // Ao arrastar o slider, sincroniza o audio
-  tempo.oninput = () => {
-    audio.currentTime = tempo.valueAsNumber;
+  elCtrl.time.oninput = () => {
+    audio.currentTime = elCtrl.time.valueAsNumber;
   };
 
   // Ao arrastar o slider, altera o volume
-  volume.oninput = () => {
-    audio.volume = volume.valueAsNumber / 100;
+  elCtrl.volume.oninput = () => {
+    audio.volume = elCtrl.volume.valueAsNumber / 100;
 
-    volume.nextElementSibling!.textContent = `${volume.valueAsNumber}%`;
+    elCtrl.volume.nextElementSibling!.textContent = `${elCtrl.volume.valueAsNumber}%`;
   };
+
+  // const playIcon = elCtrl.play.querySelector<SVGUseElement>('svg > use');
 
   // Esconde o play e mostra o pause
   audio.onplay = () => {
     frameLooper();
 
-    playIcon.style.display = 'none';
-    pauseIcon.style.display = 'block';
-    
-    em.textContent = listaDeMusicas[tocandoAgora].artist;
+    elCtrl.playIcon.href.baseVal = '#pause-symbol';
+
+    elCtrl.em.textContent = listaDeMusicas[tocandoAgora].artist;
   };
 
   // Esconde o pause e mostra o play
   audio.onpause = () => {
-    playIcon.style.display = 'block';
-    pauseIcon.style.display = 'none';
+    elCtrl.playIcon.href.baseVal = '#play-symbol';
   };
 
   // Ao clicar no play, toca a música
-  play.onclick = () => {
+  elCtrl.play.onclick = () => {
     // Se não tiver nada selecionado
-    if (!select.value) {
+    if (!elCtrl.select.value) {
       // Toca a primeira música
-      select.value = '0';      
-      listaDeMusicas[+select.value].url;
+      elCtrl.select.value = '0';
+      listaDeMusicas[+elCtrl.select.value].url;
     }
 
     // Se não tiver nada tocando, da play
@@ -125,7 +124,7 @@ function inicializa() {
   };
 
   // Ao clicar no anterior, toca a música anterior
-  anterior.onclick = () => {
+  elCtrl.prev.onclick = () => {
     // Se a música selecionada não for a primeira da lista
     if (tocandoAgora > 0) {
       // Toca a música anterior
@@ -136,14 +135,14 @@ function inicializa() {
       tocandoAgora = listaDeMusicas.length - 1;
     }
 
-    select.value = `${tocandoAgora}`;
+    elCtrl.select.value = `${tocandoAgora}`;
 
     audio.src = listaDeMusicas[tocandoAgora].url;
     audio.play();
   };
 
   // Ao clicar no próxima, toca a próxima música
-  proxima.onclick = () => {
+  elCtrl.next.onclick = () => {
     // Se a música selecionada não for a última da lista
     if (tocandoAgora < listaDeMusicas.length - 1) {
       // Toca a próxima música
@@ -154,21 +153,21 @@ function inicializa() {
       tocandoAgora = 0;
     }
 
-    select.value = `${tocandoAgora}`;
+    elCtrl.select.value = `${tocandoAgora}`;
 
     audio.src = listaDeMusicas[tocandoAgora].url;
     audio.play();
   };
 
   // Ao dar 2 cliques em uma música, toca a música
-  select.ondblclick = () => trocaMusica();
+  elCtrl.select.ondblclick = () => trocaMusica();
 
   /**
    * Verifica se a tecla pressionada faz parte da lista
    * que definimos como teclas selecionáveis.
    * Caso seja verdade, toca a música.
    */
-  select.onkeydown = (event) => {
+  elCtrl.select.onkeydown = (event) => {
     if (selectKeys.includes(event.code)) {
       trocaMusica();
     }
@@ -176,7 +175,7 @@ function inicializa() {
 
   function trocaMusica() {
     // O + converte str pra int
-    const numero = +select.value;
+    const numero = +elCtrl.select.value;
 
     audio.src = listaDeMusicas[numero].url;
     audio.play();
@@ -187,7 +186,7 @@ function inicializa() {
   /* ================================== */
 
   const audioCtx = new AudioContext();
-  const canvasCtx = canvas.getContext('2d');
+  const canvasCtx = elCtrl.canvas.getContext('2d');
 
   audio.src = listaDeMusicas[0].url;
   audio.crossOrigin = 'anonymous';
@@ -205,20 +204,22 @@ function inicializa() {
   let barX: number;
   let barWidth: number;
   let barHeight: number;
-  
-  let render = () => {
-    canvas.width = innerWidth - 40;
 
-    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-    canvasCtx.fillStyle = barsColor;
-    
-    bars = canvas.width;
-    
-    for (let i = 0; i < bars; i++) {
-      barWidth = canvas.width / bars;
-      barX = i * (barWidth + 2);
-      barHeight = -dataArray[i] / 1.6;
-      canvasCtx.fillRect(barX, canvas.height, barWidth, barHeight);
+  let render = () => {
+    elCtrl.canvas.width = innerWidth - 40;
+
+    if (canvasCtx) {
+      canvasCtx.clearRect(0, 0, elCtrl.canvas.width, elCtrl.canvas.height);
+      canvasCtx.fillStyle = barsColor;
+
+      bars = elCtrl.canvas.width;
+
+      for (let i = 0; i < bars; i++) {
+        barWidth = elCtrl.canvas.width / bars;
+        barX = i * (barWidth + 2);
+        barHeight = -dataArray[i] / 1.6;
+        canvasCtx.fillRect(barX, elCtrl.canvas.height, barWidth, barHeight);
+      }
     }
   };
 
@@ -229,7 +230,6 @@ function inicializa() {
   };
 }
 
-
 let loaded = false;
 
 document.onclick = () => {
@@ -237,4 +237,4 @@ document.onclick = () => {
     inicializa();
   }
   loaded = true;
-}
+};
